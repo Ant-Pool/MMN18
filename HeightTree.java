@@ -1,13 +1,13 @@
 public class HeightTree {
-    private HeightNode root = new HeightNode(0);
-    private HeightNode nil = new HeightNode(0);
+    private HeightNode root = new HeightNode(0, 0);
+    private HeightNode nil = new HeightNode(0, 0);
 
     public final int RED = 0;
     public final int BLACK = 1;
 
-    public HeightTree(double _data)
+    public HeightTree(double _data, double side)
     {
-        root = new HeightNode(_data);
+        root = new HeightNode(_data, side);
         root.color = BLACK;
         nil = root.parent;
         root.parent = nil;
@@ -62,36 +62,47 @@ public class HeightTree {
       
     }
 
-    public void rbInsert(double z)
+    public void rbInsert(double z, double side)
     {
-        HeightNode a = new HeightNode(z);
+        HeightNode a = new HeightNode(z, side);
+        a.sideRoot = null;
         HeightNode y = null;
         HeightNode x = root;
+        boolean flag = true;
         while(x != null)
         {
             y = x;
+            if(z == x.data){
+                flag = false;
+                a = x;
+                break;
+            }
             if(z < x.data)
                 x = x.left;
             else
                 x = x.right;
         }
-        a.parent = y;
-        if(y == null)
-            root = a;
-        else
+        if(flag)
         {
-            if(z < y.data)
-                y.left = a;
+            a.parent = y;
+            if(y == null)
+                root = a;
             else
-                y.right = a;
-         
-        }
+            {
+                if(z < y.data)
+                    y.left = a;
+                else
+                    y.right = a;
+             
+            }
+            
+            a.left = null;
+            a.right = null;
         
-        a.left = null;
-        a.right = null;
-    
-        rbInsertFixup(a);
-
+            rbInsertFixup(a);
+        }
+        /*Inserting to the small side tree */
+        a.rbInsert(side);
     }
 
     public void rbInsertFixup(HeightNode z)

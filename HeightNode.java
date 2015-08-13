@@ -4,29 +4,33 @@ public class HeightNode {
     public HeightNode parent;
     public HeightNode left;
     public HeightNode right;
-    private SmallSideNode sideRoot = new SmallSideNode(0);
+
+    public SmallSideNode sideRoot = new SmallSideNode(0);
     private SmallSideNode nil = new SmallSideNode(0);
 
     public final int RED = 0;
     public final int BLACK = 1;
 
 
-    public HeightNode(double _data)
+    public HeightNode(double _data, double side)
     {
         color = RED;
         data = _data;
         parent = null;
         left = null;
         right = null;
+        sideRoot = new SmallSideNode(side);
     }
-    public HeightNode(int _data, HeightNode _parent, HeightNode _left, HeightNode _right)
+    public HeightNode(int _data, HeightNode _parent, HeightNode _left, HeightNode _right, double side)
     {
         color = RED;
         data = _data;
         parent = _parent;
         left = _left;
         right = _right;
+        sideRoot = new SmallSideNode(side);
     }
+    
     
     private void leftRotate(SmallSideNode x)
     {
@@ -66,15 +70,15 @@ public class HeightNode {
                 sideRoot = y;
             else
             {
-                if(x == x.parent.left)
-                    x.parent.left = y;
-                else
+                if(x == x.parent.right)
                     x.parent.right = y;
+                else
+                    x.parent.left = y;
             }
             y.right = x;
             x.parent = y;
         }
-
+      
     }
 
     public void rbInsert(double z)
@@ -99,10 +103,14 @@ public class HeightNode {
                 y.left = a;
             else
                 y.right = a;
+         
         }
+        
         a.left = null;
         a.right = null;
+    
         rbInsertFixup(a);
+
     }
 
     public void rbInsertFixup(SmallSideNode z)
@@ -139,11 +147,11 @@ public class HeightNode {
                 } else {
                     if (z == z.parent.left) {//CASE 2
                         z = z.parent;
-                        leftRotate(z);
+                        rightRotate(z);
                     }//CASE 3
                     z.parent.color = BLACK;
                     z.parent.parent.color = RED;
-                    rightRotate(z.parent.parent);
+                    leftRotate(z.parent.parent);
                 }
             }
         }
@@ -298,12 +306,19 @@ public class HeightNode {
         if(x != null)
         {
             inorderTreeWalk(x.left);
-            System.out.println(x.data);
+            double leftData = -1;/* TODO: Earse */
+            double rightData = -1;
+            if(x.left != null)
+                leftData = x.left.data;
+            if(x.right != null)
+                rightData = x.right.data;
+            System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
             inorderTreeWalk(x.right);
         }
     }
 
-    public SmallSideNode getsideRoot()
+    
+    public SmallSideNode getSideRoot()
     {
         return sideRoot;
     }
