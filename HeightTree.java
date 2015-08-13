@@ -51,15 +51,15 @@ public class HeightTree {
                 root = y;
             else
             {
-                if(x == x.parent.left)
-                    x.parent.left = y;
-                else
+                if(x == x.parent.right)
                     x.parent.right = y;
+                else
+                    x.parent.left = y;
             }
             y.right = x;
             x.parent = y;
         }
-
+      
     }
 
     public void rbInsert(double z)
@@ -84,13 +84,17 @@ public class HeightTree {
                 y.left = a;
             else
                 y.right = a;
+         
         }
+        
         a.left = null;
         a.right = null;
+    
         rbInsertFixup(a);
+
     }
 
-    public void rbInsertFixup(HeightNode z)/*TODO: Fix the root thing */
+    public void rbInsertFixup(HeightNode z)
     {
         HeightNode y;
         assert (z.parent) != null;
@@ -115,14 +119,14 @@ public class HeightTree {
                     rightRotate(z.parent.parent);
                 }
             }else{
-                y = z.parent.parent.right;
+                y = z.parent.parent.left;
                 if (y != null && y.color == RED) {//CASE 1
                     z.parent.color = BLACK;
                     y.color = BLACK;
                     z.parent.parent.color = RED;
                     z = z.parent.parent;
                 } else {
-                    if (z == z.parent.right) {//CASE 2
+                    if (z == z.parent.left) {//CASE 2
                         z = z.parent;
                         rightRotate(z);
                     }//CASE 3
@@ -283,7 +287,13 @@ public class HeightTree {
         if(x != null)
         {
             inorderTreeWalk(x.left);
-            System.out.println(x.data);
+            double leftData = -1;/* TODO: Earse */
+            double rightData = -1;
+            if(x.left != null)
+                leftData = x.left.data;
+            if(x.right != null)
+                rightData = x.right.data;
+            System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
             inorderTreeWalk(x.right);
         }
     }
