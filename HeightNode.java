@@ -4,7 +4,8 @@ public class HeightNode {
     public HeightNode parent;
     public HeightNode left;
     public HeightNode right;
-
+    
+    public double max;
     public SmallSideNode sideRoot = new SmallSideNode(0);
     private SmallSideNode nil = new SmallSideNode(0);
 
@@ -34,7 +35,7 @@ public class HeightNode {
     
     private void leftRotate(SmallSideNode x)
     {
-        if(x.right != nil && sideRoot.parent == nil) {
+        if(x != null && x.right != nil && sideRoot.parent == nil) {
             SmallSideNode y = x.right;//Set y.
             x.right = y.left;//Turn y's left subtree into x's right subtree
             if (y.left != null)
@@ -86,6 +87,8 @@ public class HeightNode {
         SmallSideNode a = new SmallSideNode(z);
         SmallSideNode y = null;
         SmallSideNode x = sideRoot;
+        if(max < z)
+            max = z;
         while(x != null)
         {
             y = x;
@@ -150,8 +153,10 @@ public class HeightNode {
                         rightRotate(z);
                     }//CASE 3
                     z.parent.color = BLACK;
-                    z.parent.parent.color = RED;
-                    leftRotate(z.parent.parent);
+                    if(z.parent.parent != null){
+                        z.parent.parent.color = RED;
+                        leftRotate(z.parent.parent);
+                    }
                 }
             }
         }
@@ -162,6 +167,7 @@ public class HeightNode {
     public SmallSideNode rbDelete(SmallSideNode z)
     {
         if(z != null) {
+            double zData = z.data;
             SmallSideNode y;
             SmallSideNode x;
             if (z.left == null || z.right == null)
@@ -192,6 +198,8 @@ public class HeightNode {
                 z.data = y.data;
             if (y.color == BLACK)
                 rbDeleteFixup(x);
+             if(max == zData)
+                max = treeMaximum(sideRoot).data;
             return y;
         }
         return null;
@@ -301,6 +309,7 @@ public class HeightNode {
         return x;
     }
 
+
     public void inorderTreeWalk(SmallSideNode x)
     {
         if(x != null)
@@ -317,6 +326,10 @@ public class HeightNode {
         }
     }
 
+    public boolean isMoreThanOne()
+    {
+        return sideRoot.right != null || sideRoot.left != null;
+    }
     
     public SmallSideNode getSideRoot()
     {

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class HeightTree {
     private HeightNode root = new HeightNode(0, 0);
     private HeightNode nil = new HeightNode(0, 0);
@@ -293,11 +295,11 @@ public class HeightTree {
         return x;
     }
 
-    public void inorderTreeWalk(HeightNode x)
+    public void printInorderTreeWalk(HeightNode x)
     {
         if(x != null)
         {
-            inorderTreeWalk(x.left);
+            printInorderTreeWalk(x.left);
             double leftData = -1;/* TODO: Earse */
             double rightData = -1;
             if(x.left != null)
@@ -305,9 +307,43 @@ public class HeightTree {
             if(x.right != null)
                 rightData = x.right.data;
             System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
-            inorderTreeWalk(x.right);
+            printInorderTreeWalk(x.right);
         }
     }
+    
+    public Object[] inorderTreeWalk()
+    {
+        ArrayList tree = new ArrayList();
+        inorderTreeWalk2(root, tree);
+        return tree.toArray();
+    }
+    
+    public void inorderTreeWalk2(HeightNode x, ArrayList tree)
+    {
+        if(x != null)
+        {
+            inorderTreeWalk2(x.left, tree);
+            tree.add(x.data);
+            inorderTreeWalk2(x.right, tree);
+        }
+    }
+     public Object[] maxInorderTreeWalk()
+    {
+        ArrayList tree = new ArrayList();
+        maxInorderTreeWalk2(root, tree);
+        return tree.toArray();
+    }
+    
+    public void maxInorderTreeWalk2(HeightNode x, ArrayList tree)
+    {
+        if(x != null)
+        {
+            maxInorderTreeWalk2(x.left, tree);
+            tree.add(x.max);
+            maxInorderTreeWalk2(x.right, tree);
+        }
+    }
+
 
     public HeightNode getRoot()
     {

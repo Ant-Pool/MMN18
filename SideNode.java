@@ -5,6 +5,7 @@ public class SideNode {
     public SideNode left;
     public SideNode right;
 
+    public double max;
     public SmallHeightNode heightRoot = new SmallHeightNode(0);
     private SmallHeightNode nil = new SmallHeightNode(0);
 
@@ -86,6 +87,8 @@ public class SideNode {
         SmallHeightNode a = new SmallHeightNode(z);
         SmallHeightNode y = null;
         SmallHeightNode x = heightRoot;
+        if(max < z)
+            max = z;
         while(x != null)
         {
             y = x;
@@ -134,8 +137,11 @@ public class SideNode {
                         leftRotate(z);
                     }//CASE 3
                     z.parent.color = BLACK;
-                    z.parent.parent.color = RED;
-                    rightRotate(z.parent.parent);
+                    if(z.parent.parent != null)
+                    {
+                        z.parent.parent.color = RED;
+                        rightRotate(z.parent.parent);
+                    }
                 }
             }else{
                 y = z.parent.parent.left;
@@ -150,8 +156,11 @@ public class SideNode {
                         rightRotate(z);
                     }//CASE 3
                     z.parent.color = BLACK;
-                    z.parent.parent.color = RED;
-                    leftRotate(z.parent.parent);
+                    if(z.parent.parent != null)
+                    {
+                        z.parent.parent.color = RED;
+                        leftRotate(z.parent.parent);
+                    }
                 }
             }
         }
@@ -162,6 +171,8 @@ public class SideNode {
     public SmallHeightNode rbDelete(SmallHeightNode z)
     {
         if(z != null) {
+            double zData = z.data;
+           
             SmallHeightNode y;
             SmallHeightNode x;
             if (z.left == null || z.right == null)
@@ -192,6 +203,8 @@ public class SideNode {
                 z.data = y.data;
             if (y.color == BLACK)
                 rbDeleteFixup(x);
+            if(max == zData)
+                max = treeMaximum(heightRoot).data;
             return y;
         }
         return null;
@@ -317,6 +330,10 @@ public class SideNode {
         }
     }
 
+    public boolean isMoreThanOne()
+    {
+        return heightRoot.right != null || heightRoot.left != null;
+    }
     
     public SmallHeightNode getHeightRoot()
     {
