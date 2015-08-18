@@ -326,6 +326,11 @@ public class HeightNode {
         }
     }
 
+    public boolean isLeaf()
+    {
+        return left == null && right == null;
+    }
+
     public boolean isMoreThanOne()
     {
         return sideRoot.right != null || sideRoot.left != null;

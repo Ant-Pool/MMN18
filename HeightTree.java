@@ -3,7 +3,8 @@ import java.util.ArrayList;
 public class HeightTree {
     private HeightNode root = new HeightNode(0, 0);
     private HeightNode nil = new HeightNode(0, 0);
-
+    
+    public int size;
     public final int RED = 0;
     public final int BLACK = 1;
 
@@ -13,6 +14,7 @@ public class HeightTree {
         root.color = BLACK;
         nil = root.parent;
         root.parent = nil;
+        size = 1;
     }
 
     private void leftRotate(HeightNode x)
@@ -86,6 +88,7 @@ public class HeightTree {
         }
         if(flag)
         {
+            size++;
             a.parent = y;
             if(y == null)
                 root = a;
@@ -156,6 +159,7 @@ public class HeightTree {
     public HeightNode rbDelete(HeightNode z)
     {
         if(z != null) {
+            
             HeightNode y;
             HeightNode x;
             if (z.left == null || z.right == null)

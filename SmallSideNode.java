@@ -25,4 +25,10 @@ public class SmallSideNode {
         left = _left;
         right = _right;
     }
+    
+    public boolean isLeaf()
+    {
+        return left == null && right == null;
+    }
+
 }

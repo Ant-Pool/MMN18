@@ -329,6 +329,12 @@ public class SideNode {
             inorderTreeWalk(x.right);
         }
     }
+    
+    
+    public boolean isLeaf()
+    {
+        return left == null && right == null;
+    }
 
     public boolean isMoreThanOne()
     {

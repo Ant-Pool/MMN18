@@ -4,6 +4,7 @@ public class SideTree {
     private SideNode root = new SideNode(0, 0);
     private SideNode nil = new SideNode(0, 0);
 
+    public int size;
     public final int RED = 0;
     public final int BLACK = 1;
 
@@ -13,6 +14,7 @@ public class SideTree {
         root.color = BLACK;
         nil = root.parent;
         root.parent = nil;
+        size = 1;
     }
 
     private void leftRotate(SideNode x)
@@ -86,6 +88,7 @@ public class SideTree {
         }
         if(flag)
         {
+            size++;
             a.parent = y;
             if(y == null)
                 root = a;
@@ -156,6 +159,7 @@ public class SideTree {
     public SideNode rbDelete(SideNode z)
     {
         if(z != null) {
+
             SideNode y;
             SideNode x;
             if (z.left == null || z.right == null)
