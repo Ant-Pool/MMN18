@@ -1,16 +1,21 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args)
     {
-        System.out.println("Hello World!");
-        
+        System.out.println("Please enter a command: *Command Name* *side* *height*. type 'exit' to exit.");
+        Scanner userInput = new Scanner( System.in );
+        String command = "";
         Factory fct = new Factory();
-        fct.command("INSERTBOX 6 3");
-       fct.command("INSERTBOX 7 4");
-        fct.st.printInorderTreeWalk(fct.st.getRoot());
-         fct.ht.printInorderTreeWalk(fct.ht.getRoot());
-        System.out.println(fct.getBox(6, 2).toString());
-        
-                                                                      
+      
+        while(!command.equals("exit"))
+        {
+            System.out.print(">>>");
+            command = userInput.nextLine();
+            
+            fct.command(command);
+        }
+        System.out.println("Exiting...");
         
     }
 }

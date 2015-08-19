@@ -1,6 +1,6 @@
 public class Factory {
-    public HeightTree ht;//TODO: change back to private
-    public SideTree st;
+    private HeightTree ht;
+    private SideTree st;
     
     public Factory()
     {
@@ -33,46 +33,65 @@ public class Factory {
         {
             HeightNode hn = ht.treeSearch(ht.getRoot(), height);
             SideNode sn = st.treeSearch(st.getRoot(), side);
+            if(hn!= null){
             if(hn.isMoreThanOne())//O(1)
             {
                 hn.rbDelete(hn.treeSearch(hn.sideRoot, side));
             }else {
                 ht.rbDelete(hn);
             }
+            }
+            if(sn != null){
             if(sn.isMoreThanOne())
             {
                 sn.rbDelete(sn.treeSearch(sn.getHeightRoot(), height));
             }else {
                 st.rbDelete(sn);
             }
+            }
             
-            if(ht.treeSearch(ht.getRoot(), height)==null)
+            if(ht.treeSearch(ht.getRoot(), height)==null && hn != null)
                 ht.size--;
-            if(st.treeSearch(st.getRoot(), side)==null)
+            if(st.treeSearch(st.getRoot(), side)==null && sn != null)
                 st.size--;
         }
     }
     /*
     Check if exists a box that can contain the parameters
-    Run time: O(max(n, m))
+    Run time: O(n)
     */
     public boolean checkBox(double side, double height)
     {
         if(!(ht==null && st == null))
         {
-           Object[] heights = ht.inorderTreeWalk();
-           Object[] maxSides = ht.maxInorderTreeWalk();
-           Object[] sides = st.inorderTreeWalk();
-           Object[] maxHeights = st.maxInorderTreeWalk();
-           int i = 0;
-           while(i < heights.length && i < sides.length)
-               if(((double)heights[i] >= (double)height && (double)maxSides[i] >= side) || ((double)sides[i] >= side && (double)maxHeights[i] >= height))
-                return true;
-               i++;
-           }
-           return false;
+           if(checkBox2(ht.getRoot(),side, height ))
+            return true;
+        }
+        return false;
     }
     
+    public boolean checkBox2(HeightNode hn, double side, double height)
+    {
+        if(!(ht==null && st == null))
+        {
+          
+           if(hn != null)
+           {
+               if(height <= hn.data && side <= hn.max)
+            return true;
+            else
+                return checkBox2(hn.left, side, height) || checkBox2(hn.right, side, height);
+             }
+             return false;
+        }
+        else
+        return false;
+    }
+    
+    /* 
+    Returning and removing the minimal box who the present fits into.
+    Run Time: 
+    */
     public Box getBox(double side, double height)
     {
         if(!(ht==null && st==null))
@@ -83,8 +102,6 @@ public class Factory {
             if(n*(Math.log(m)/Math.log(2)) >= m*(Math.log(n)/Math.log(2)))//Checking which tree will take us less time
             {
                 HeightNode x = ht.getRoot();
-                
-                    System.out.println("[11] x is " + x.data);
                   
                 while(!x.isLeaf())
                 {
@@ -101,16 +118,16 @@ public class Factory {
                              x = x.left;
                     }
                 }
+          
                 if(x.data < height)
                     x = x.parent;
+                   
                 while(x != null && x.max < side)
                 {
                     x = ht.treeSuccessor(x);
                 }
                 if(x == null)
                     return null;
-                st.printInorderTreeWalk(st.getRoot());
-                System.out.println("X is " + x.data);
                 SmallSideNode y = x.getSideRoot();
                  while(!y.isLeaf())
                 {
@@ -132,7 +149,11 @@ public class Factory {
                 return box;
             } else {
                  SideNode x = st.getRoot();
-                while(!x.isLeaf())
+                 if(x==null)
+                 {
+                     return null;
+                 }
+                while( !x.isLeaf())
                 {
                     if(x.data < side )
                     {
@@ -178,21 +199,41 @@ public class Factory {
     
     public void command(String _command)
     {
-        System.out.println("Command is " + _command);
+        
         _command = _command.toLowerCase();
         String[] command = _command.split(" ");
-        
+        System.out.println("Command is " + _command);
         if(command[0].equals("insertbox"))
         {
-            System.out.println("Inserting a new box.");
+            System.out.println("===Inserting a new box...");
             insertBox(Double.parseDouble(command[1]),Double.parseDouble(command[2]));
-            System.out.println("New box is now in the data structure");
+            System.out.println("===New box is now in the data structure");
         }
         if(command[0].equals("removebox"))
         {
-            System.out.println("Removing the box.");
+            System.out.println("===Removing the box...");
             removeBox(Double.parseDouble(command[1]),Double.parseDouble(command[2]));
-            System.out.println("Box has removed from the data structure");
-        }   
+            System.out.println("===Box has removed from the data structure");
+        }
+        if(command[0].equals("checkbox"))
+        {
+            System.out.println("===Looking for a box...");
+            if(checkBox(Double.parseDouble(command[1]),Double.parseDouble(command[2])))
+            {
+                System.out.println("===Box exists.");
+            } else {
+                System.out.println("===No box was found.");
+            }
+            
+        }
+        if(command[0].equals("getbox"))
+        {
+            System.out.println("===Searching for a box...");
+            Box box = getBox(Double.parseDouble(command[1]),Double.parseDouble(command[2]));
+            if(box != null)
+                System.out.println("===Returned box, " + box.toString());
+            else
+                System.out.println("===Not found");
+        }
     }
 }

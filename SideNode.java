@@ -21,6 +21,7 @@ public class SideNode {
         left = null;
         right = null;
         heightRoot = new SmallHeightNode(height);
+        max = height;
     }
     public SideNode(int _data, SideNode _parent, SideNode _left, SideNode _right, double height)
     {
@@ -30,6 +31,7 @@ public class SideNode {
         left = _left;
         right = _right;
         heightRoot = new SmallHeightNode(height);
+        max = height;
     }
     
     
@@ -320,12 +322,7 @@ public class SideNode {
         {
             inorderTreeWalk(x.left);
             double leftData = -1;/* TODO: Earse */
-            double rightData = -1;
-            if(x.left != null)
-                leftData = x.left.data;
-            if(x.right != null)
-                rightData = x.right.data;
-            System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
+            System.out.println("Value: " + x.data + " Color: " + x.color );
             inorderTreeWalk(x.right);
         }
     }

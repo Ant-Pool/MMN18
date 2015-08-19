@@ -30,6 +30,6 @@ public class Box{
     
     public String toString()
     {
-        return "Side: " + side + ". Height: " + height;
+        return "Side: " + side + ". Height: " + height + ".";
     }
 }

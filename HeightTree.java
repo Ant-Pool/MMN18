@@ -304,13 +304,7 @@ public class HeightTree {
         if(x != null)
         {
             printInorderTreeWalk(x.left);
-            double leftData = -1;/* TODO: Earse */
-            double rightData = -1;
-            if(x.left != null)
-                leftData = x.left.data;
-            if(x.right != null)
-                rightData = x.right.data;
-            System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
+            System.out.println("Value: " + x.data + " Color: " + x.color );
             printInorderTreeWalk(x.right);
         }
     }

@@ -21,6 +21,7 @@ public class HeightNode {
         left = null;
         right = null;
         sideRoot = new SmallSideNode(side);
+        max = side;
     }
     public HeightNode(int _data, HeightNode _parent, HeightNode _left, HeightNode _right, double side)
     {
@@ -30,6 +31,7 @@ public class HeightNode {
         left = _left;
         right = _right;
         sideRoot = new SmallSideNode(side);
+        max = side;
     }
     
     
@@ -315,14 +317,8 @@ public class HeightNode {
         if(x != null)
         {
             inorderTreeWalk(x.left);
-            double leftData = -1;/* TODO: Earse */
-            double rightData = -1;
-            if(x.left != null)
-                leftData = x.left.data;
-            if(x.right != null)
-                rightData = x.right.data;
-            System.out.println("Value: " + x.data + " Color: " + x.color + " and his left is " + leftData  + " his right is " + rightData);
-            inorderTreeWalk(x.right);
+           System.out.println("Value: " + x.data + " Color: " + x.color );
+           inorderTreeWalk(x.right);
         }
     }
 
